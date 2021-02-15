@@ -186,3 +186,65 @@ const queueWithStacks = new QueueWStacks()
 queueWithStacks.enqueue(2)
 queueWithStacks.enqueue(3)
 queueWithStacks.enqueue(4)
+
+/* ===== 9. Square dance pairing =====
+As people come to the dance floor, they should be paired off as quickly as possible: man with woman, man with woman, all the way down the line. If several men arrive in a row, they should be paired in the order they came, and likewise if several women do. Maintain a queue of "spares" (men for whom you have no women yet, or vice versa), and pair them as appropriate.
+*/
+const fQueue = new Queue()
+const mQueue = new Queue()
+function pairDancers(dancers) {
+    dancers.forEach(dancer => {
+        if(dancer[0] === 'F') {
+            fQueue.enqueue(dancer)
+        }
+        if(dancer[0] === 'M') {
+            mQueue.enqueue(dancer)
+        }
+        if(fQueue.first && mQueue.first) {
+            let male = mQueue.dequeue()
+            let female = fQueue.dequeue()
+            console.log(`${male} is paired with ${female}`)
+        }
+    })
+    if(fQueue.first) {
+        let count = 1
+        let currNode = fQueue.first
+        while(currNode.next !== null) {
+            count++
+            currNode = currNode.next
+        }
+        console.log(`There are ${count} female dancers waiting to dance`)
+    }
+    if(mQueue.first) {
+        let count = 1
+        let currNode = mQueue.first
+        while(currNode.next !== null) {
+            count++
+            currNode = currNode.next
+        }
+        console.log(`There are ${count} male dancers waiting to dance`)
+    }
+}
+pairDancers(['F Jane', 'M Frank', 'M John', 'M Sherlock', 'F Madonna', 'M David', 'M Christopher', 'F Beyonce'])
+//output: 
+//M Frank is paired with F Jane
+// M John is paired with F Madonna
+// M Sherlock is paired with F Beyonce
+// There are 2 male dancers waiting to dance
+
+/* ===== 10. The Ophidian Bank =====
+At the Ophidian Bank, a single teller serves a long queue of people. New customers join the end of the queue, and the teller will serve a customer only if they have all of the appropriate paperwork. Write a representation of this queue; 25% of the time (random), a customer's paperwork isn't quite right, and it's back to the end of the queue. Show what a few minutes of the bank's lobby would look like.
+*/
+function orphidianBank(queue) {
+    while(queue.first) {
+        let person = queue.first.data
+        let random = Math.randon()
+        if(random < .25) {
+            queue.enqueue(person)
+            console.log(`${person}'s paperwork isn't complete - moved back to the end of the queue`)
+        } else {
+            console.log(`${person} has been served`)
+        }
+    }
+    console.log(`Everyone has been served.`)
+}
