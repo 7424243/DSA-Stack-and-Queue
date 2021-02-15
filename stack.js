@@ -65,7 +65,7 @@ function display(stack) {
     let results = ''
     let currNode = stack.top
     while(currNode !== null) {
-        results = results + ` ${currNode.data}`
+        results = results + `${currNode.data}, `
         currNode = currNode.next
     }
     console.log(results)
@@ -75,4 +75,78 @@ display(starTrek)//output: Scotty, McCoy, Spock, Kirk
 //Remove McCoy from your stack and display the stack
 starTrek.pop()
 starTrek.pop()
-display(starTrek)
+display(starTrek)//output: Spock, Kirk
+
+/* ===== 3. Check for palindromes using a stack =====
+Write an algorithm that uses a stack to determine whether a given input is palindrome or not.
+*/
+function is_palindrome(s) {
+    s = s.toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
+    // Your code goes here
+    for(let i = 0; i < s.length/2; i++) {
+        if(s[i] !== s[s.length - 1 - i]) {
+            return false
+        } 
+    }
+    return true
+}
+console.log(is_palindrome("dad"))//output: true
+console.log(is_palindrome("A man, a plan, a canal: Panama"))//output: true
+console.log(is_palindrome("1001"))//output: true
+console.log(is_palindrome("Tauhida"))//output: false
+
+/* ===== 4. Matching parenthesis in an expression =====
+A stack can be used to ensure that an arithmetic expression has balanced parentheses. Write a function that takes an arithmetic expression as an argument and returns true or false based on matching parenthesis. As a bonus provide a meaningful error message to the user as to what's missing. For example, you are missing a ( or missing a ")".
+
+For version 1, the parentheses you need to consider are ( and ). Finding a close parenthesis without an open parenthesis is an error (report the location of the close); reaching the end of the string while still "holding" an open parenthesis is also an error (report the location of the open).
+*/
+function matchingParenthesis(expression) {
+    const stack = new Stack()
+    let e = expression.replace(/\s+/g, '')
+    if(!e) {
+        return null
+    }
+    for(let i = 0; i < e.length; i++) {
+        if(e[i] === '(') {
+            stack.push('(')
+        }
+        if(e[i] === ')') {
+            if(isEmpty(stack)) {
+                console.log('you are missing a "("')
+                return false
+            }
+            stack.pop()
+        }
+    }
+    if(!isEmpty(stack)) {
+        console.log('you are missing a ")"')
+        return false
+    }
+    console.log('everything looks good!')
+    return true
+}
+matchingParenthesis('( 4 X 5 ')//output: 'you are missing a ")"'
+
+/* ===== 5. Sort stack ===== 
+Write a program to sort a stack such that the smallest items are on the top (in ascending order). You can use an additional stack, but you may not use any other data structure (such as an array, or linked list).
+*/
+function sort(stack) {
+    let sorted = new Stack()
+    while(stack.top) {
+        let temp = stack.pop()
+        while(sorted.top && sorted.top.data < temp) {
+            stack.push(sorted.pop())
+        }
+        sorted.push(temp)
+    }
+    display(sorted)
+    return sorted
+}
+const s = new Stack();
+s.push(4);
+s.push(10);
+s.push(8);
+s.push(5);
+s.push(1);
+s.push(6);
+sort(s)
