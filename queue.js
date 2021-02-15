@@ -83,3 +83,106 @@ starTreckQ.dequeue()//need to remove 'Kirk' in order to get to 'Spock'
 starTreckQ.dequeue()
 starTreckQ.enqueue('Kirk')
 display(starTreckQ)//output: Uhura, Sulu, Checkov, Kirk, 
+
+/* ===== 7. Create a queue class using Doubly linked list =====
+Use the items listed in #6 and enqueue them to your queue.
+Check to see who is first one on the Queue?
+*/
+class _NodeD {
+    constructor(value) {
+        this.value = value
+        this.prev = null
+        this.next = null
+    }
+}
+class DoubleQueue {
+    constructor() {
+        this.first = null
+        this.last = null
+    }
+    enqueue(value) {
+        let node = new _NodeD(value)
+        if(!this.first) {
+            this.first = node
+            this.last = node
+            return this.first.value
+        }
+        if(this.last) {
+            let lastitem = this.last
+            this.last = node
+            this.last.prev = lastitem
+            lastitem.next = this.last
+            return this.last.value
+        }
+    }
+    dequeue() {
+        if(!this.first) {
+            return 'Your queue is empty'
+        }
+        let oldFirst = this.first
+        let newFirst = this.first.next
+        this.first = newFirst
+        newFirst.prev = null
+        return oldFirst.value
+    }
+}
+let starTreckDQ = new DoubleQueue()
+starTreckDQ.enqueue('Kirk')
+starTreckDQ.enqueue('Spock')
+starTreckDQ.enqueue('Uhara')
+starTreckDQ.enqueue('Sulu')
+starTreckDQ.enqueue('Checkov')
+console.log(starTreckDQ)
+
+/* ===== 8. Queue implementations using a stack =====
+Implement a queue using 2 stacks and no other data structure. (You are not allowed to use a doubly linked list or array. Use your stack implementation with a linked list from above to solve this problem.)
+*/
+class _QNode {
+    constructor(data, next) {
+        this.data = data
+        this.next = next
+    }
+}
+class Stack {
+    constructor() {
+        this.top = null
+    }
+    push(data) {
+        if(this.top === null) {
+            this.top = new _QNode(data, null)
+            return this.top
+        }
+        const node = new _QNode(data, this.top)
+        this.top = node
+    }
+    pop() {
+        const node = this.top
+        this.top = node.next
+        return node.data
+    }
+}
+class QueueWStacks {
+    constructor() {
+        this.stack1 = new Stack()
+        this.stack2 = new Stack()
+    }
+    enqueue(item) {
+        this.stack1.push(item)
+    }
+    dequeue() {
+        if(!this.stack2.top) {
+            if(!this.stack1.top) {
+                return 'There is nothing to dequeue'
+            }
+            while(this.stack1.top) {
+                let p = this.stack1.pop()
+                this.stack2.push(p)
+            }
+        }
+        return this.stack2.pop()
+    }
+}
+const queueWithStacks = new QueueWStacks()
+queueWithStacks.enqueue(2)
+queueWithStacks.enqueue(3)
+queueWithStacks.enqueue(4)
