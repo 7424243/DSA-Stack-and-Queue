@@ -149,4 +149,4 @@ s.push(8);
 s.push(5);
 s.push(1);
 s.push(6);
-sort(s)
+sort(s)//output: 1, 4, 5, 6, 8, 10, 
